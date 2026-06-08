@@ -1,4 +1,4 @@
-import numpy as np #numpy is a python library that lets you do calculations need to make the neuron
+import numpy as np #numpy is a python library that lets you do calculations needed to make the neuron
 import matplotlib.pyplot as plt #and matplot is a library for drawing graphs
 from matplotlib.lines import Line2D
 
