@@ -1,0 +1,166 @@
+import numpy as np #numpy is a python library that lets you do calculations need to make the neuron
+import matplotlib.pyplot as plt #and matplot is a library for drawing graphs
+from matplotlib.lines import Line2D
+
+#the data set with hours studied on the left and attendance in percent on the right
+#again please note that these data values are not to be my final values and are just a stand in
+X = np.array([
+    [7, 72], [8, 80], [6, 85], [9, 82], [7, 88], [10, 84], [8, 90], [9, 87], [6, 78], [12, 91],
+    [11, 92], [7, 95], [10, 89], [12, 94], [8, 97], [11, 86], [9, 98], [5, 75], [13, 96], [10, 100],
+
+    [1, 48], [2, 52], [1, 57], [3, 54], [2, 61], [4, 58], [3, 63], [2, 66], [1, 62], [4, 78],
+    [4, 60], [3, 68], [5, 64], [2, 70], [4, 72], [5, 69], [3, 74], [6, 67], [5, 76], [6, 73],
+])
+
+#this array classifys the data as a pass or a fail, 1 being a pass and 0 being a fail
+y = np.array([
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+])
+
+#Intial parameters, the weights here are made using an array of zeros specifically [0,0],
+#due to the weights both starting at zero the neuron takes a little longer to find good values for it meaning the epoch number has to be quite high, here 2300
+weights = np.zeros(2)
+bias = -2
+learning_rate = 0.01 #this stands in for the 
+#the low learning rate here gives a stable and more accurate resulting boundary line 
+#at the cost of higher epochs and more time on computations
+
+
+#Training process/step function
+for epoch in range(2300):
+
+    for i in range(len(X)):
+
+        z = np.dot(weights, X[i]) + bias #this gives the sum of our weights and x values then adds the bias, this is the neuron function itself
+
+        prediction = 1 if z >= 0 else 0 #step function
+
+        error = y[i] - prediction #
+
+        weights += learning_rate * error * X[i]
+        bias += learning_rate * error
+
+#this is a debug line i've been using to see if the weights and bias's are changing correctly,
+#it basically just spits out the new weights and bias in the output
+print("Weights:", weights)
+print("Bias:", bias)
+
+predictions = []
+
+for point in X:
+
+    z = np.dot(weights, point) + bias
+
+    prediction = 1 if z >= 0 else 0
+
+    predictions.append(prediction)
+
+predictions = np.array(predictions)
+
+
+#these lines gives an accuracy score, I've been using this more for debug purposes so far but an interesting stat i could bring up in the investigation
+accuracy = np.mean(predictions == y) * 100
+
+print(f"Accuracy: {accuracy:.1f}%")
+
+
+#This draws the points for the graph using matplot, it shows an x for incorrect predictions and a circle for correct ones
+for i in range(len(X)):
+
+    actual = y[i]
+    predicted = predictions[i]
+
+    #Correct or incorrect prediction markers
+    if actual == predicted:
+        marker = "o"
+        size = 120
+    else:
+        marker = "x"
+        size = 180
+
+    #This just colours passes and fails, green being a pass and red being a fail
+    if actual == 1:
+        colour = "green"
+    else:
+        colour = "red"
+
+    plt.scatter(
+        X[i, 0],
+        X[i, 1],
+        c=colour,
+        marker=marker,
+        s=size
+    )
+
+
+#This graphs the decision boundary
+x_values = np.linspace(0, 15, 100)
+
+if weights[1] != 0:
+
+    y_values = -(weights[0] * x_values + bias) / weights[1]
+
+    plt.plot(
+        x_values,
+        y_values,
+        linewidth=2,
+        label="Decision Boundary"
+    )
+
+
+#creates a legend for the graph
+legend_elements = [
+    Line2D(
+        [0], [0],
+        marker='o',
+        color='w',
+        markerfacecolor='black',
+        markersize=10,
+        label='Correct Prediction'
+    ),
+    Line2D(
+        [0], [0],
+        marker='x',
+        color='black',
+        markersize=10,
+        label='Incorrect Prediction'
+    ),
+    Line2D(
+        [0], [0],
+        marker='o',
+        color='w',
+        markerfacecolor='green',
+        markersize=10,
+        label='Actual Pass'
+    ),
+    Line2D(
+        [0], [0],
+        marker='o',
+        color='w',
+        markerfacecolor='red',
+        markersize=10,
+        label='Actual Fail'
+    )
+]
+
+
+#and finally this bit actually draws out the graph
+plt.xlabel("Hours Studied")
+plt.ylabel("Attendance (%)")
+
+plt.title(
+    f"Perceptron Classification\nAccuracy = {accuracy:.1f}%"
+)
+
+plt.legend(handles=legend_elements)
+
+plt.grid(True)
+
+plt.xlim(0, 15)
+plt.ylim(40, 105)
+
+plt.show()
