@@ -1,4 +1,4 @@
-import numpy as np #numpy is a python library that lets you do calculations needed to make the neuron
+import numpy as np #numpy is a Python library that lets you do calculations needed to make the neuron
 import matplotlib.pyplot as plt #and matplot is a library for drawing graphs
 from matplotlib.lines import Line2D
 
@@ -12,7 +12,7 @@ X = np.array([
     [4, 60], [3, 68], [5, 64], [2, 70], [4, 72], [5, 69], [3, 74], [6, 67], [5, 76], [6, 73],
 ])
 
-#this array classifys the data as a pass or a fail, 1 being a pass and 0 being a fail
+#this array classifies the data as a pass or a fail, 1 being a pass and 0 being a fail
 y = np.array([
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -21,7 +21,7 @@ y = np.array([
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ])
 
-#Intial parameters, the weights here are made using an array of zeros specifically [0,0],
+#Initial parameters, the weights here are made using an array of zeros specifically [0,0],
 #due to the weights both starting at zero the neuron takes a little longer to find good values for it meaning the epoch number has to be quite high, here 2300
 weights = np.zeros(2)
 bias = -2
@@ -41,10 +41,10 @@ for epoch in range(2300):
 
         error = y[i] - prediction #
 
-        weights += learning_rate * error * X[i] #for both the learning fucntions the += just updates the variable on the left while also adding it to the right
+        weights += learning_rate * error * X[i] #for both the learning functions the += just updates the variable on the left while also adding it to the right
         bias += learning_rate * error
 
-#this is a debug line i've been using to see if the weights and bias's are changing correctly,
+#this is a debug line I've been using to see if the weights and biases are changing correctly,
 #it basically just spits out the new weights and bias in the output
 print("Weights:", weights)
 print("Bias:", bias)
@@ -62,7 +62,7 @@ for point in X:
 predictions = np.array(predictions)
 
 
-#these lines gives an accuracy score, I've been using this more for debug purposes so far but an interesting stat i could bring up in the investigation
+#these lines give an accuracy score, I've been using this more for debug purposes so far but an interesting stat I could bring up in the investigation
 accuracy = np.mean(predictions == y) * 100
 
 print(f"Accuracy: {accuracy:.1f}%")
