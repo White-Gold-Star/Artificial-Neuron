@@ -41,7 +41,7 @@ for epoch in range(2300):
 
         error = y[i] - prediction #
 
-        weights += learning_rate * error * X[i]
+        weights += learning_rate * error * X[i] #for both the learning fucntions the += just updates the variable on the left while also adding it to the right
         bias += learning_rate * error
 
 #this is a debug line i've been using to see if the weights and bias's are changing correctly,
